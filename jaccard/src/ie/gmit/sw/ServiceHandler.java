@@ -1,6 +1,11 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.util.Deque;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
@@ -19,9 +24,8 @@ public class ServiceHandler extends HttpServlet {
 	 *   2) An Chain of Responsibility: declare the initial handler or a full chain object
 	 *   1) A Proxy: Declare a shared proxy here and a request proxy inside doGet()
 	 */
-	private String environmentalVariable = null; //Demo purposes only. Rename this variable to something more appropriate
+	private int shingleSize;
 	private static long jobNumber = 0;
-
 
 	/* This method is only called once, when the servlet is first started (like a constructor). 
 	 * It's the Template Patten in action! Any application-wide variables should be initialised 
@@ -31,11 +35,10 @@ public class ServiceHandler extends HttpServlet {
 	public void init() throws ServletException {
 		ServletContext ctx = getServletContext(); //The servlet context is the application itself.
 		
-		//Reads the value from the <context-param> in web.xml. Any application scope variables 
-		//defined in the web.xml can be read in as follows:
-		environmentalVariable = ctx.getInitParameter("SOME_GLOBAL_OR_ENVIRONMENTAL_VARIABLE"); 
+		// Reads the value from the <context-param> in web.xml. Any application scope variables 
+		// defined in the web.xml can be read in as follows:
+		shingleSize = Integer.parseInt(ctx.getInitParameter("SHINGLE_SIZE")); 
 	}
-
 
 	/* The doGet() method handles a HTTP GET request. Please note the following very carefully:
 	 *   1) The doGet() method is executed in a separate thread. If you instantiate any objects
@@ -47,51 +50,49 @@ public class ServiceHandler extends HttpServlet {
 	 *      vice-versa.
 	 */
 	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		//Step 1) Write out the MIME type
-		resp.setContentType("text/html"); 
+		// Step 1) Write out the MIME type
+		resp.setContentType("text/html");
 		
-		//Step 2) Get a handle on the PrintWriter to write out HTML
-		PrintWriter out = resp.getWriter(); 
+		// Step 2) Get a handle on the PrintWriter to write out HTML
+		PrintWriter out = resp.getWriter();
 		
-		//Step 3) Get any submitted form data. These variables are local to this method and thread safe...
+		// Step 3) Get any submitted form data. These variables are local to this method and thread safe...
 		String title = req.getParameter("txtTitle");
 		String taskNumber = req.getParameter("frmTaskNumber");
 		Part part = req.getPart("txtDocument");
-
 		
-		//Step 4) Process the input and write out the response. 
-		//The following string should be extracted as a context from web.xml 
-		out.print("<html><head><title>A JEE Application for Measuring Document Similarity</title>");		
-		out.print("</head>");		
+		// Step 4) Process the input and write out the response. 
+		// The following string should be extracted as a context from web.xml 
+		out.print("<html><head><title>A JEE Application for Measuring Document Similarity</title>");
+		out.print("</head>");
 		out.print("<body>");
 		
-		//We could use the following to track asynchronous tasks. Comment it out otherwise...
+		// We could use the following to track asynchronous tasks. Comment it out otherwise...
 		if (taskNumber == null){
 			taskNumber = new String("T" + jobNumber);
 			jobNumber++;
-			//Add job to in-queue
+			// Add job to in-queue
 		}else{
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/poll");
 			dispatcher.forward(req,resp);
-			//Check out-queue for finished job with the given taskNumber
+			// Check out-queue for finished job with the given taskNumber
 		}
 		
-		//Output some headings at the top of the generated page
+		// Output some headings at the top of the generated page
 		out.print("<H1>Processing request for Job#: " + taskNumber + "</H1>");
 		out.print("<H3>Document Title: " + title + "</H3>");
 		
-		
-		//Output some useful information for you (yes YOU!)
+		// Output some useful information for you (yes YOU!)
 		out.print("<div id=\"r\"></div>");
 		out.print("<font color=\"#993333\"><b>");
-		out.print("Environmental Variable Read from web.xml: " + environmentalVariable);
+		out.print("Environmental Variable Read from web.xml: " + shingleSize);
 		out.print("<br>This servlet should only be responsible for handling client request and returning responses. Everything else should be handled by different objects.");
-		out.print("Note that any variables declared inside this doGet() method are thread safe. Anything defined at a class level is shared between HTTP requests.");				
+		out.print("Note that any variables declared inside this doGet() method are thread safe. Anything defined at a class level is shared between HTTP requests.");	
 		out.print("</b></font>");
 		
 		out.print("<h3>Compiling and Packaging this Application</h3>");
-		out.print("Place any servlets or Java classes in the WEB-INF/classes directory. Alternatively package "); 
-		out.print("these resources as a JAR archive in the WEB-INF/lib directory using by executing the ");  
+		out.print("Place any servlets or Java classes in the WEB-INF/classes directory. Alternatively package ");
+		out.print("these resources as a JAR archive in the WEB-INF/lib directory using by executing the ");
 		out.print("following command from the WEB-INF/classes directory jar -cf my-library.jar *");
 		
 		out.print("<ol>");
@@ -100,8 +101,8 @@ public class ServiceHandler extends HttpServlet {
 		out.print("<li><b>Build JAR Archive:</b> jar -cf jaccard.war *");
 		out.print("</ol>");
 		
-		//We can also dynamically write out a form using hidden form fields. The form itself is not
-		//visible in the browser, but the JavaScript below can see it.
+		// We can also dynamically write out a form using hidden form fields. The form itself is not
+		// visible in the browser, but the JavaScript below can see it.
 		out.print("<form name=\"frmRequestDetails\" action=\"poll\">");
 		out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");
 		out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
@@ -109,13 +110,11 @@ public class ServiceHandler extends HttpServlet {
 		out.print("</body>");	
 		out.print("</html>");	
 		
-		//JavaScript to periodically poll the server for updates (this is ideal for an asynchronous operation)
+		// JavaScript to periodically poll the server for updates (this is ideal for an asynchronous operation)
 		out.print("<script>");
 		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 10000);"); //Refresh every 10 seconds
 		out.print("</script>");
 		
-		
-			
 		/* File Upload: The following few lines read the multipart/form-data from an instance of the
 		 * interface Part that is accessed by Part part = req.getPart("txtDocument"). We can read 
 		 * bytes or arrays of bytes by calling read() on the InputStream of the Part object. In this
@@ -124,17 +123,47 @@ public class ServiceHandler extends HttpServlet {
 		 * can be easily completed by writing the file to disk if necessary. The following lines just
 		 * read the document from memory... this might not be a good idea if the file size is large!
 		 */
-		out.print("<h3>Uploaded Document</h3>");	
-		out.print("<font color=\"0000ff\">");	
+		out.print("<h3>Uploaded Document</h3>");
+		out.print("<font color=\"0000ff\">");
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()));
 		String line = null;
+		
+		Deque<String> buffer = new LinkedList<String>();
+		
 		while ((line = br.readLine()) != null) {
-			//Break each line up into shingles and do something. The servlet really should act as a
-			//contoller and dispatch this task to something else... Divide and conquer...! I've been
-			//telling you all this since 2nd year...!
+			// Break each line up into shingles and do something. The servlet really should act as a
+			// contoller and dispatch this task to something else... Divide and conquer...! I've been
+			// telling you all this since 2nd year...!
 			out.print(line);
+			
+			// Break each line into an array of words.
+			// We could also use a regex to remove everything except A-z.
+			String[] words = line.split(" ");
+
+			for(int i = 0; i < words.length; i++) {
+				buffer.add(words[i]);
+			}
 		}
-		out.print("</font>");	
+		
+		Set<Integer> shingles = new LinkedHashSet<Integer>();
+		int counter;
+		
+		while (buffer.size() >= shingleSize) {
+			StringBuilder sb = new StringBuilder();
+			counter = 0;
+			
+			while (counter < shingleSize) {
+				if (buffer.peek() != null)
+					sb.append(buffer.poll());
+	
+				counter++;
+			}
+			
+			shingles.add(sb.toString().toUpperCase().hashCode());
+		}
+		
+		out.print("</font>");
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
