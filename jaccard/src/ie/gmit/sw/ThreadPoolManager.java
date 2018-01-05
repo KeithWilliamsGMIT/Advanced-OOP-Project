@@ -25,13 +25,14 @@ public class ThreadPoolManager {
 	private ExecutorService pool;
 
 	/*
-	 * Private constructor to prevent an instance of this object being created.
+	 * Private constructor to prevent more than one instance of this object
+	 * from being created.
 	 */
 	private ThreadPoolManager() { }
 	
 	/**
-	 * Get the single instance.
-	 * @return an instance of the {@link ie.gmit.sw.ThreadPoolManager} class.
+	 * Get the single instance of the {@link ie.gmit.sw.ThreadPoolManager} class.
+	 * @return the instance of the class.
 	 */
 	public static ThreadPoolManager getInstance() {
 		// Note that this is known as a 'lazy' singleton.

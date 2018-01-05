@@ -51,8 +51,31 @@ public class Worker implements Runnable {
 					JaccardRequest jr = (JaccardRequest) request;
 					
 					// Extract the set of shingles from the document.
+					// We could create a parser factory to instantiate this object.
 					ShingleParser sp = new ShingleParser();
 					Set<Integer> shingles = sp.parse(jr.getShingleSize(), jr.getDocument());
+					
+					Repository repository = new DocumentRepository();
+					
+					/*
+					 * Get the number of documents in the database and use the total
+					 * number of documents as the id. This means the first document
+					 * will have an id of 0, the second will have an id of 1 and so on.
+					 * Note that this method of incrementing the document relies on
+					 * documents not being deleted from the database. If this functionality
+					 * is added, then a different method of creating a new id must be
+					 * used.
+					 */
+					int id = repository.retrieveAll().size();
+					
+					// Create the new document object that should be stored.
+					// We could move this instantiation to a document factory.
+					Document document = new Document(id, shingles);
+					
+					// Write the document to the database.
+					repository.save(document);
+					
+					// Calculate the Jaccard index.
 					
 					// Add the result to an out queue when processing is complete.
 					

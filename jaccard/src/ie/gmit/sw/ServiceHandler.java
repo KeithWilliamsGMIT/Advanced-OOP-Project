@@ -40,8 +40,14 @@ public class ServiceHandler extends HttpServlet {
 		
 		// Reads the value from the <context-param> in web.xml. Any application scope variables 
 		// defined in the web.xml can be read in as follows:
-		shingleSize = Integer.parseInt(ctx.getInitParameter("SHINGLE_SIZE")); 
-		int threadPoolSize = Integer.parseInt(ctx.getInitParameter("THREAD_POOL_SIZE")); 
+		shingleSize = Integer.parseInt(ctx.getInitParameter("SHINGLE_SIZE"));
+		int threadPoolSize = Integer.parseInt(ctx.getInitParameter("THREAD_POOL_SIZE"));
+		
+		String storageEncryptionPassword = ctx.getInitParameter("STORAGE_ENCRYPTION_PASSWORD");
+		String storageFilename = ctx.getInitParameter("STORAGE_FILENAME");
+		
+		// Initialise the database.
+		DatabaseManager.getInstance().init(storageEncryptionPassword, storageFilename);
 		
 		try {
 			// Start the thread pool.
