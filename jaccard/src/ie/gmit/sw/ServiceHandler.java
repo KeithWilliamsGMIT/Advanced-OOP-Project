@@ -1,10 +1,8 @@
 package ie.gmit.sw;
 
 import java.io.*;
-import java.util.Deque;
-import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -26,9 +24,14 @@ public class ServiceHandler extends HttpServlet {
 	 */
 	private int shingleSize;
 	private static long jobNumber = 0;
+	
+	/*
+	 * The in queue that stores all the requests that need to be processed.
+	 */
+	private BlockingQueue<Requestable> queue = new LinkedBlockingQueue<Requestable>();
 
 	/* This method is only called once, when the servlet is first started (like a constructor). 
-	 * It's the Template Patten in action! Any application-wide variables should be initialised 
+	 * It's the Template Pattern in action! Any application-wide variables should be initialised 
 	 * here. Note that if you set the xml element <load-on-startup>1</load-on-startup>, this
 	 * method will be automatically fired by Tomcat when the web server itself is started.
 	 */
@@ -38,6 +41,15 @@ public class ServiceHandler extends HttpServlet {
 		// Reads the value from the <context-param> in web.xml. Any application scope variables 
 		// defined in the web.xml can be read in as follows:
 		shingleSize = Integer.parseInt(ctx.getInitParameter("SHINGLE_SIZE")); 
+		int threadPoolSize = Integer.parseInt(ctx.getInitParameter("THREAD_POOL_SIZE")); 
+		
+		try {
+			// Start the thread pool.
+			ThreadPoolManager poolManager = ThreadPoolManager.getInstance();
+			poolManager.init(threadPoolSize, queue);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/* The doGet() method handles a HTTP GET request. Please note the following very carefully:
@@ -71,10 +83,15 @@ public class ServiceHandler extends HttpServlet {
 		if (taskNumber == null){
 			taskNumber = new String("T" + jobNumber);
 			jobNumber++;
-			// Add job to in-queue
+			
+			// Create a new request and add the job to the in-queue.
+			// Note that the add() method is not a blocking call.
+			JaccardRequest request = new JaccardRequest(taskNumber, part.getInputStream(), shingleSize);
+			queue.add(request);
 		}else{
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/poll");
 			dispatcher.forward(req,resp);
+			
 			// Check out-queue for finished job with the given taskNumber
 		}
 		
@@ -85,7 +102,6 @@ public class ServiceHandler extends HttpServlet {
 		// Output some useful information for you (yes YOU!)
 		out.print("<div id=\"r\"></div>");
 		out.print("<font color=\"#993333\"><b>");
-		out.print("Environmental Variable Read from web.xml: " + shingleSize);
 		out.print("<br>This servlet should only be responsible for handling client request and returning responses. Everything else should be handled by different objects.");
 		out.print("Note that any variables declared inside this doGet() method are thread safe. Anything defined at a class level is shared between HTTP requests.");	
 		out.print("</b></font>");
@@ -114,56 +130,6 @@ public class ServiceHandler extends HttpServlet {
 		out.print("<script>");
 		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 10000);"); //Refresh every 10 seconds
 		out.print("</script>");
-		
-		/* File Upload: The following few lines read the multipart/form-data from an instance of the
-		 * interface Part that is accessed by Part part = req.getPart("txtDocument"). We can read 
-		 * bytes or arrays of bytes by calling read() on the InputStream of the Part object. In this
-		 * case, we are only interested in text files, so it's as easy to buffer the bytes as characters
-		 * to enable the servlet to read the uploaded file line-by-line. Note that the uplaod action
-		 * can be easily completed by writing the file to disk if necessary. The following lines just
-		 * read the document from memory... this might not be a good idea if the file size is large!
-		 */
-		out.print("<h3>Uploaded Document</h3>");
-		out.print("<font color=\"0000ff\">");
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(part.getInputStream()));
-		String line = null;
-		
-		Deque<String> buffer = new LinkedList<String>();
-		
-		while ((line = br.readLine()) != null) {
-			// Break each line up into shingles and do something. The servlet really should act as a
-			// contoller and dispatch this task to something else... Divide and conquer...! I've been
-			// telling you all this since 2nd year...!
-			out.print(line);
-			
-			// Break each line into an array of words.
-			// We could also use a regex to remove everything except A-z.
-			String[] words = line.split(" ");
-
-			for(int i = 0; i < words.length; i++) {
-				buffer.add(words[i]);
-			}
-		}
-		
-		Set<Integer> shingles = new LinkedHashSet<Integer>();
-		int counter;
-		
-		while (buffer.size() >= shingleSize) {
-			StringBuilder sb = new StringBuilder();
-			counter = 0;
-			
-			while (counter < shingleSize) {
-				if (buffer.peek() != null)
-					sb.append(buffer.poll());
-	
-				counter++;
-			}
-			
-			shingles.add(sb.toString().toUpperCase().hashCode());
-		}
-		
-		out.print("</font>");
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

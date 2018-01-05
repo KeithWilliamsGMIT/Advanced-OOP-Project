@@ -19,6 +19,11 @@
     <param-name>SHINGLE_SIZE</param-name>
     <param-value>3</param-value>
   </context-param>
+  
+  <context-param>
+    <param-name>THREAD_POOL_SIZE</param-name>
+    <param-value>50</param-value>
+  </context-param>
 
   <!-- A servlet class must be bound to a name -->
   <servlet>
