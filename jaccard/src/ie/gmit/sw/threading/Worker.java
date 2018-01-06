@@ -1,7 +1,14 @@
-package ie.gmit.sw;
+package ie.gmit.sw.threading;
 
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
+
+import ie.gmit.sw.databases.DocumentRepository;
+import ie.gmit.sw.databases.Repository;
+import ie.gmit.sw.jaccard.Document;
+import ie.gmit.sw.jaccard.ShingleParser;
+import ie.gmit.sw.requests.JaccardRequest;
+import ie.gmit.sw.requests.Requestable;
 
 /**
  * Worker threads are responsible for processing requests. Once processed
@@ -26,7 +33,7 @@ public class Worker implements Runnable {
 	
 	/**
 	 * Fully parameterised constructor to create an instance of the
-	 * {@link ie.gmit.sw.Worker} class.
+	 * {@link ie.gmit.sw.threading.Worker} class.
 	 * @param queue of requests to be processed.
 	 */
 	public Worker(BlockingQueue<Requestable> queue) {

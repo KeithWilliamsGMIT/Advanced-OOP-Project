@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.jaccard;
 
 import java.util.Set;
 
@@ -12,7 +12,7 @@ public class Document {
 	
 	/**
 	 * Fully parameterised constructor to create an instance of the
-	 * {@link ie.gmit.sw.Document} class.
+	 * {@link ie.gmit.sw.jaccard.Document} class.
 	 * @param id is used to uniquely identify the document.
 	 * @param shingles is a set of hashed values. 
 	 */

@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.databases;
 
 import java.util.List;
 

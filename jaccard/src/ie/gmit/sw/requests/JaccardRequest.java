@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.requests;
 
 import java.io.InputStream;
 
@@ -13,7 +13,7 @@ public class JaccardRequest implements Requestable {
 	
 	/**
 	 * Fully parameterised constructor to create an instance of the
-	 * {@link ie.gmit.sw.JaccardRequest} class.
+	 * {@link ie.gmit.sw.requests.JaccardRequest} class.
 	 * @param taskNumber associated with this request.
 	 * @param document associated with this request.
 	 * @param shingleSize is the number of words per shingle.

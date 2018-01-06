@@ -1,12 +1,14 @@
-package ie.gmit.sw;
+package ie.gmit.sw.databases;
 
 import java.util.List;
 
 import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 
+import ie.gmit.sw.jaccard.Document;
+
 /**
- * This class is responsible for saving and retrieving all {@link ie.gmit.sw.Document}
+ * This class is responsible for saving and retrieving all {@link ie.gmit.sw.jaccard.Document}
  * objects to and from the database.
  */
 public class DocumentRepository implements Repository<Document> {

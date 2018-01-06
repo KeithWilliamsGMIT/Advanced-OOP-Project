@@ -1,8 +1,10 @@
-package ie.gmit.sw;
+package ie.gmit.sw.threading;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import ie.gmit.sw.requests.Requestable;
 
 /**
  * This class is responsible for setting up a thread pool that will handle
@@ -11,7 +13,7 @@ import java.util.concurrent.Executors;
  * the client.
  * 
  * Note that this is class uses the singleton design pattern as there
- * should only ever be one {@link ie.gmit.sw.ThreadPoolManager} instance.
+ * should only ever be one {@link ie.gmit.sw.threading.ThreadPoolManager} instance.
  */
 public class ThreadPoolManager {
 	/*
@@ -31,7 +33,7 @@ public class ThreadPoolManager {
 	private ThreadPoolManager() { }
 	
 	/**
-	 * Get the single instance of the {@link ie.gmit.sw.ThreadPoolManager} class.
+	 * Get the single instance of the {@link ie.gmit.sw.threading.ThreadPoolManager} class.
 	 * @return the instance of the class.
 	 */
 	public static ThreadPoolManager getInstance() {

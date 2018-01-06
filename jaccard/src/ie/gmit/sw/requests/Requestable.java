@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.requests;
 
 /**
  * This interface should be implemented by any object that plays the role

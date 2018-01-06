@@ -1,4 +1,4 @@
-package ie.gmit.sw;
+package ie.gmit.sw.databases;
 
 import com.db4o.Db4oEmbedded;
 import com.db4o.ObjectContainer;
@@ -34,7 +34,7 @@ public class DatabaseManager {
 	private DatabaseManager() { }
 	
 	/**
-	 * Get the single instance of the {@link ie.gmit.sw.DatabaseManager} class.
+	 * Get the single instance of the {@link ie.gmit.sw.databases.DatabaseManager} class.
 	 * @return the instance of the class.
 	 */
 	public static DatabaseManager getInstance() {
