@@ -1,8 +1,12 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.util.Map;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
+
+import ie.gmit.sw.threading.ThreadPoolManager;
 
 public class ServicePollHandler extends HttpServlet {
 	public void init() throws ServletException {
@@ -28,7 +32,24 @@ public class ServicePollHandler extends HttpServlet {
 		out.print("<H1>Processing request for Job#: " + taskNumber + "</H1>");
 		out.print("<H3>Document Title: " + title + "</H3>");
 		out.print("<b><font color=\"ff0000\">A total of " + counter + " polls have been made for this request.</font></b> ");
-		out.print("Place the final response here... a nice table (or graphic!) of the document similarity...");
+		
+		Map<Integer, Float> result = ThreadPoolManager.getInstance().getMap().remove(taskNumber);
+		
+		if (result != null) {
+			out.print("<table>");
+			out.print("<tr><th>Document ID</th><th>Similarity</th></tr>");
+			
+			for (Integer key : result.keySet()) {
+				out.print("<tr>");
+				out.print("<td>" + key + "</td>");
+				out.print("<td>" + result.get(key) + "</td>");
+				out.print("</tr>");
+			}
+			
+			out.print("</table>");
+		} else {
+			out.print("Your request has not yet been processed... Please Wait...");
+		}
 		
 		out.print("<form name=\"frmRequestDetails\">");
 		out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");

@@ -31,6 +31,11 @@ public class Worker implements Runnable {
 	private BlockingQueue<Requestable> queue;
 	
 	/*
+	 * The out queue (map) stores all the requests that have been processed.
+	 */
+	private Map<String, Map<Integer, Float>> map;
+	
+	/*
 	 * If true, the thread will keep checking for new requests in the in queue.
 	 */
 	private boolean keepRunning = true;
@@ -39,9 +44,11 @@ public class Worker implements Runnable {
 	 * Fully parameterised constructor to create an instance of the
 	 * {@link ie.gmit.sw.threading.Worker} class.
 	 * @param queue of requests to be processed.
+	 * @param map of requests that are processed.
 	 */
-	public Worker(BlockingQueue<Requestable> queue) {
+	public Worker(BlockingQueue<Requestable> queue, Map<String, Map<Integer, Float>> map) {
 		this.queue = queue;
+		this.map = map;
 	}
 	
 	/**
@@ -94,7 +101,7 @@ public class Worker implements Runnable {
 					Map<Integer, Float> result = jaccard.compare(document, documents);
 					
 					// Add the result to an out queue when processing is complete.
-					
+					map.put(request.getTaskNumber(), result);
 				}
 			} catch (InterruptedException e) {
 				e.printStackTrace();

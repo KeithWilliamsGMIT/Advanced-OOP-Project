@@ -30,8 +30,10 @@ public class ShingleParser {
 		StringBuilder sb = new StringBuilder();
 		int counter  = 0;
 		
-		// Loop through the words and group them into shingles.
-		// Add the shingles to a set.
+		/*
+		 * Loop through the words and group them into shingles and then
+		 * add the shingles to a set.
+		 */
 		while (buffer.peek() != null) {
 			if (counter == shingleSize - 1) {
 				shingles.add(sb.toString().toUpperCase().hashCode());
@@ -57,8 +59,11 @@ public class ShingleParser {
 		String line = null;
 		
 		while ((line = br.readLine()) != null) {
-			// Break each line into an array of words.
-			// We could also use a regex to remove everything except A-z.
+			/*
+			 * Break each line into an array of words. We could also use a
+			 * regex to remove all characters except A-z, however, this
+			 * might eliminate the semantics of the document.
+			 */
 			String[] words = line.split(" ");
 			
 			// Add each word in the document to the collection.

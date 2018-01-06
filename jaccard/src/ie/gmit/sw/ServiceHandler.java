@@ -1,7 +1,9 @@
 package ie.gmit.sw;
 
 import java.io.*;
+import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.*;
@@ -36,6 +38,14 @@ public class ServiceHandler extends HttpServlet {
 	 */
 	private BlockingQueue<Requestable> queue = new LinkedBlockingQueue<Requestable>();
 
+	/*
+	 * The out queue (map) stores all the requests that have been processed.
+	 * The key is the task number while the value is another map. The key in
+	 * this map is the id of the document that the original was compared
+	 * against, while the value is the similarity measurement of the documents.
+	 */
+	private Map<String, Map<Integer, Float>> map = new ConcurrentHashMap<String, Map<Integer, Float>>();
+	
 	/* This method is only called once, when the servlet is first started (like a constructor). 
 	 * It's the Template Pattern in action! Any application-wide variables should be initialised 
 	 * here. Note that if you set the xml element <load-on-startup>1</load-on-startup>, this
@@ -59,7 +69,7 @@ public class ServiceHandler extends HttpServlet {
 		try {
 			// Start the thread pool.
 			ThreadPoolManager poolManager = ThreadPoolManager.getInstance();
-			poolManager.init(threadPoolSize, queue);
+			poolManager.init(threadPoolSize, queue, map);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
