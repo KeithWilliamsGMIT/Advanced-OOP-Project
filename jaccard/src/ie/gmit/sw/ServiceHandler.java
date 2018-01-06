@@ -49,11 +49,12 @@ public class ServiceHandler extends HttpServlet {
 		shingleSize = Integer.parseInt(ctx.getInitParameter("SHINGLE_SIZE"));
 		int threadPoolSize = Integer.parseInt(ctx.getInitParameter("THREAD_POOL_SIZE"));
 		
-		String storageEncryptionPassword = ctx.getInitParameter("STORAGE_ENCRYPTION_PASSWORD");
-		String storageFilename = ctx.getInitParameter("STORAGE_FILENAME");
+		String storageEncryptionPassword = ctx.getInitParameter("DB_STORAGE_ENCRYPTION_PASSWORD");
+		String storageFilename = ctx.getInitParameter("DB_STORAGE_FILENAME");
+		int updateDepth = Integer.parseInt(ctx.getInitParameter("DB_UPDATE_DEPTH"));
 		
 		// Initialise the database.
-		DatabaseManager.getInstance().init(storageEncryptionPassword, storageFilename);
+		DatabaseManager.getInstance().init(storageEncryptionPassword, storageFilename, updateDepth);
 		
 		try {
 			// Start the thread pool.

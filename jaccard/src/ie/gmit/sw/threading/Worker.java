@@ -1,11 +1,15 @@
 package ie.gmit.sw.threading;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 
 import ie.gmit.sw.databases.DocumentRepository;
 import ie.gmit.sw.databases.Repository;
 import ie.gmit.sw.jaccard.Document;
+import ie.gmit.sw.jaccard.DocumentComparator;
+import ie.gmit.sw.jaccard.JaccardComparator;
 import ie.gmit.sw.jaccard.ShingleParser;
 import ie.gmit.sw.requests.JaccardRequest;
 import ie.gmit.sw.requests.Requestable;
@@ -62,7 +66,9 @@ public class Worker implements Runnable {
 					ShingleParser sp = new ShingleParser();
 					Set<Integer> shingles = sp.parse(jr.getShingleSize(), jr.getDocument());
 					
+					// Get all documents from the database.
 					Repository repository = new DocumentRepository();
+					List<Document> documents = repository.retrieveAll();
 					
 					/*
 					 * Get the number of documents in the database and use the total
@@ -73,7 +79,7 @@ public class Worker implements Runnable {
 					 * is added, then a different method of creating a new id must be
 					 * used.
 					 */
-					int id = repository.retrieveAll().size();
+					int id = documents.size();
 					
 					// Create the new document object that should be stored.
 					// We could move this instantiation to a document factory.
@@ -83,6 +89,9 @@ public class Worker implements Runnable {
 					repository.save(document);
 					
 					// Calculate the Jaccard index.
+					DocumentComparator jaccard = new JaccardComparator();
+					
+					Map<Integer, Float> result = jaccard.compare(document, documents);
 					
 					// Add the result to an out queue when processing is complete.
 					

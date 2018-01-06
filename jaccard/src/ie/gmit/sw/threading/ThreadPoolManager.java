@@ -17,7 +17,7 @@ import ie.gmit.sw.requests.Requestable;
  */
 public class ThreadPoolManager {
 	/*
-	 * Own instance of the {@link ie.gmit.sw.ThreadPoolManager} class.
+	 * Own instance of the ThreadPoolManager class.
 	 */
 	private static ThreadPoolManager instance;
 

@@ -3,7 +3,7 @@ package ie.gmit.sw.requests;
 import java.io.InputStream;
 
 /**
- * This is the implementation of the requestable interface for reuqests
+ * This is the implementation of the requestable interface for requests
  * that will compute the Jaccard index of a document.
  */
 public class JaccardRequest implements Requestable {

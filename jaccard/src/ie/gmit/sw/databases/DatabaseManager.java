@@ -18,7 +18,7 @@ import xtea_db4o.XTeaEncryptionStorage;
 public class DatabaseManager {
 	
 	/*
-	 * Own instance of the {@link ie.gmit.sw.DatabaseManager} class.
+	 * Own instance of the DatabaseManager class.
 	 */
 	private static DatabaseManager instance;
 	
@@ -51,11 +51,11 @@ public class DatabaseManager {
 	 * @param pasword to encrypt the storage file.
 	 * @param filename is the name of the storage file.
 	 */
-	public void init(String password, String filename) {
+	public void init(String password, String filename, int updateDepth) {
 		EmbeddedConfiguration config = Db4oEmbedded.newConfiguration();
 		config.common().add(new TransparentActivationSupport());
 		config.common().add(new TransparentPersistenceSupport());
-		config.common().updateDepth(7);
+		config.common().updateDepth(updateDepth);
 		
 		/*
 		 * We can use the XTea lib for encryption. The basic Db4O container
