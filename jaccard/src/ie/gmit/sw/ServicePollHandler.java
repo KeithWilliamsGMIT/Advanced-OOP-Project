@@ -36,6 +36,12 @@ public class ServicePollHandler extends HttpServlet {
 		Map<Integer, Float> result = ThreadPoolManager.getInstance().getMap().remove(taskNumber);
 		
 		if (result != null) {
+			/*
+			 * If the request is ready then return a table showing the
+			 * id and measurement of similarity for each document that it
+			 * was compared against. Also return a link to the starting
+			 * page so that the user compare another document.
+			 */
 			out.print("<table>");
 			out.print("<tr><th>Document ID</th><th>Similarity</th></tr>");
 			
@@ -47,21 +53,27 @@ public class ServicePollHandler extends HttpServlet {
 			}
 			
 			out.print("</table>");
+			
+			out.print("<a href=\"\\jaccard\">Compare more documents!</a>");
 		} else {
+			/*
+			 * If the request is not ready then display a message to the
+			 * user and return a script to refresh every 5 seconds.
+			 */
 			out.print("Your request has not yet been processed... Please Wait...");
+			out.print("<form name=\"frmRequestDetails\">");
+			out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");
+			out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
+			out.print("<input name=\"counter\" type=\"hidden\" value=\"" + counter + "\">");
+			out.print("</form>");
+			
+			out.print("<script>");
+			out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 5000);");
+			out.print("</script>");
 		}
 		
-		out.print("<form name=\"frmRequestDetails\">");
-		out.print("<input name=\"txtTitle\" type=\"hidden\" value=\"" + title + "\">");
-		out.print("<input name=\"frmTaskNumber\" type=\"hidden\" value=\"" + taskNumber + "\">");
-		out.print("<input name=\"counter\" type=\"hidden\" value=\"" + counter + "\">");
-		out.print("</form>");
 		out.print("</body>");
 		out.print("</html>");
-		
-		out.print("<script>");
-		out.print("var wait=setTimeout(\"document.frmRequestDetails.submit();\", 5000);"); // Refresh every 5 seconds
-		out.print("</script>");
 	}
 
 	public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

@@ -106,31 +106,11 @@ public class ServiceHandler extends HttpServlet {
 		} else {
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/poll");
 			dispatcher.forward(req,resp);
-			
-			// Check out-queue for finished job with the given taskNumber
 		}
 		
 		// Output some headings at the top of the generated page
 		out.print("<H1>Processing request for Job#: " + taskNumber + "</H1>");
 		out.print("<H3>Document Title: " + title + "</H3>");
-		
-		// Output some useful information for you (yes YOU!)
-		out.print("<div id=\"r\"></div>");
-		out.print("<font color=\"#993333\"><b>");
-		out.print("<br>This servlet should only be responsible for handling client request and returning responses. Everything else should be handled by different objects.");
-		out.print("Note that any variables declared inside this doGet() method are thread safe. Anything defined at a class level is shared between HTTP requests.");	
-		out.print("</b></font>");
-		
-		out.print("<h3>Compiling and Packaging this Application</h3>");
-		out.print("Place any servlets or Java classes in the WEB-INF/classes directory. Alternatively package ");
-		out.print("these resources as a JAR archive in the WEB-INF/lib directory using by executing the ");
-		out.print("following command from the WEB-INF/classes directory jar -cf my-library.jar *");
-		
-		out.print("<ol>");
-		out.print("<li><b>Compile on Mac/Linux:</b> javac -cp .:$TOMCAT_HOME/lib/servlet-api.jar WEB-INF/classes/ie/gmit/sw/*.java");
-		out.print("<li><b>Compile on Windows:</b> javac -cp .;%TOMCAT_HOME%/lib/servlet-api.jar WEB-INF/classes/ie/gmit/sw/*.java");
-		out.print("<li><b>Build JAR Archive:</b> jar -cf jaccard.war *");
-		out.print("</ol>");
 		
 		// We can also dynamically write out a form using hidden form fields. The form itself is not
 		// visible in the browser, but the JavaScript below can see it.
