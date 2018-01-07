@@ -1,7 +1,9 @@
-package ie.gmit.sw.jaccard;
+package ie.gmit.sw.comparators;
 
 import java.util.List;
 import java.util.Map;
+
+import ie.gmit.sw.document.Document;
 
 /**
  * This interface should be implemented by any object that plays the role

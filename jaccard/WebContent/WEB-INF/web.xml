@@ -21,6 +21,11 @@
   </context-param>
   
   <context-param>
+    <param-name>MIN_HASH_NUMBER</param-name>
+    <param-value>200</param-value>
+  </context-param>
+  
+  <context-param>
     <param-name>THREAD_POOL_SIZE</param-name>
     <param-value>50</param-value>
   </context-param>

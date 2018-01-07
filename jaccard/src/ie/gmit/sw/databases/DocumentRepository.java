@@ -5,10 +5,10 @@ import java.util.List;
 import com.db4o.ObjectSet;
 import com.db4o.query.Predicate;
 
-import ie.gmit.sw.jaccard.Document;
+import ie.gmit.sw.document.Document;
 
 /**
- * This class is responsible for saving and retrieving all {@link ie.gmit.sw.jaccard.Document}
+ * This class is responsible for saving and retrieving all {@link ie.gmit.sw.document.Document}
  * objects to and from the database.
  */
 public class DocumentRepository implements Repository<Document> {

@@ -1,4 +1,4 @@
-package ie.gmit.sw.jaccard;
+package ie.gmit.sw.document;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,16 +12,28 @@ import java.util.Set;
 /**
  * A class responsible for parsing shingles from a document.
  */
-public class ShingleParser {
+public class ShingleParser implements Parseator<Set<Integer>> {
+	/*
+	 * The number of words per shingle.
+	 */
+	private int shingleSize;
 	
 	/**
-	 * Parse a set of set of shingles from a document.
-	 * @param shingleSize is the words per shingle.
+	 * Fully parameterised constructor to create an instance of the
+	 * {@link ie.gmit.sw.comparators.ShingleParser} class.
+	 * @param shingleSize is the number of words per shingle.
+	 */
+	public ShingleParser(int shingleSize) {
+		this.shingleSize = shingleSize;
+	}
+	
+	/**
+	 * Parse a set of shingles from a document.
 	 * @param stream of the document.
 	 * @return a set of shingles.
 	 * @throws IOException
 	 */
-	public Set<Integer> parse(int shingleSize, InputStream stream) throws IOException {
+	public Set<Integer> parse(InputStream stream) throws IOException {
 		// The set of shingles.
 		Set<Integer> shingles = new LinkedHashSet<Integer>();
 		

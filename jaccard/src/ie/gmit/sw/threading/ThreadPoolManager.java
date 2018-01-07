@@ -2,6 +2,7 @@ package ie.gmit.sw.threading;
 
 import java.util.Map;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -29,10 +30,13 @@ public class ThreadPoolManager {
 	
 	/*
 	 * The out queue (map) stores all the requests that have been processed.
+	 * The key is the task number while the value is another map. The key in
+	 * this map is the id of the document that the original was compared
+	 * against, while the value is the similarity measurement of the documents.
 	 * This is stored as an instance variable so that it can be accessed from
 	 * other classes, for example, the servlet that handles the polling.
 	 */
-	private Map<String, Map<Integer, Float>> map;
+	private Map<String, Map<Integer, Float>> map = new ConcurrentHashMap<String, Map<Integer, Float>>();
 
 	/*
 	 * Private constructor to prevent more than one instance of this object
@@ -57,15 +61,11 @@ public class ThreadPoolManager {
 	 * Setup the thread pool that will process requests.
 	 * @param threadPoolSize the number of threads in the thread pool.
 	 * @param queue of requests to be processed.
-	 * @param map of requests that are processed.
 	 * @throws InterruptedException
 	 */
-	public void init(int threadPoolSize, BlockingQueue<Requestable> queue, Map<String, Map<Integer,Float>> map) throws InterruptedException {
+	public void init(int threadPoolSize, BlockingQueue<Requestable> queue) throws InterruptedException {
 		// Create a thread pool with X number of threads.
 		pool = Executors.newFixedThreadPool(threadPoolSize);
-		
-		this.map = map;
-
 		// Populate the thread pool with workers.
 		for (int i = 0; i < threadPoolSize; i++) {
 			Runnable worker = new Worker(queue, map);

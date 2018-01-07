@@ -10,7 +10,8 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import ie.gmit.sw.databases.DatabaseManager;
-import ie.gmit.sw.requests.JaccardRequest;
+import ie.gmit.sw.requests.SimpleRequest;
+import ie.gmit.sw.requests.OptimisedRequest;
 import ie.gmit.sw.requests.Requestable;
 import ie.gmit.sw.threading.ThreadPoolManager;
 
@@ -31,20 +32,13 @@ public class ServiceHandler extends HttpServlet {
 	 *   1) A Proxy: Declare a shared proxy here and a request proxy inside doGet()
 	 */
 	private int shingleSize;
+	private int minHashNumber;
 	private static long jobNumber = 0;
 	
 	/*
 	 * The in queue that stores all the requests that need to be processed.
 	 */
 	private BlockingQueue<Requestable> queue = new LinkedBlockingQueue<Requestable>();
-
-	/*
-	 * The out queue (map) stores all the requests that have been processed.
-	 * The key is the task number while the value is another map. The key in
-	 * this map is the id of the document that the original was compared
-	 * against, while the value is the similarity measurement of the documents.
-	 */
-	private Map<String, Map<Integer, Float>> map = new ConcurrentHashMap<String, Map<Integer, Float>>();
 	
 	/* This method is only called once, when the servlet is first started (like a constructor). 
 	 * It's the Template Pattern in action! Any application-wide variables should be initialised 
@@ -57,6 +51,7 @@ public class ServiceHandler extends HttpServlet {
 		// Reads the value from the <context-param> in web.xml. Any application scope variables 
 		// defined in the web.xml can be read in as follows:
 		shingleSize = Integer.parseInt(ctx.getInitParameter("SHINGLE_SIZE"));
+		minHashNumber = Integer.parseInt(ctx.getInitParameter("MIN_HASH_NUMBER"));
 		int threadPoolSize = Integer.parseInt(ctx.getInitParameter("THREAD_POOL_SIZE"));
 		
 		String storageEncryptionPassword = ctx.getInitParameter("DB_STORAGE_ENCRYPTION_PASSWORD");
@@ -69,7 +64,7 @@ public class ServiceHandler extends HttpServlet {
 		try {
 			// Start the thread pool.
 			ThreadPoolManager poolManager = ThreadPoolManager.getInstance();
-			poolManager.init(threadPoolSize, queue, map);
+			poolManager.init(threadPoolSize, queue);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -109,9 +104,9 @@ public class ServiceHandler extends HttpServlet {
 			
 			// Create a new request and add the job to the in-queue.
 			// Note that the add() method is not a blocking call.
-			JaccardRequest request = new JaccardRequest(taskNumber, part.getInputStream(), shingleSize);
+			Requestable request = new OptimisedRequest(taskNumber, part.getInputStream(), shingleSize, minHashNumber);
 			queue.add(request);
-		}else{
+		} else {
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/poll");
 			dispatcher.forward(req,resp);
 			
