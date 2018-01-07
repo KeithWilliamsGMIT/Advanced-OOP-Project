@@ -1,16 +1,13 @@
 package ie.gmit.sw;
 
 import java.io.*;
-import java.util.Map;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 
 import ie.gmit.sw.databases.DatabaseManager;
-import ie.gmit.sw.requests.SimpleRequest;
 import ie.gmit.sw.requests.OptimisedRequest;
 import ie.gmit.sw.requests.Requestable;
 import ie.gmit.sw.threading.ThreadPoolManager;

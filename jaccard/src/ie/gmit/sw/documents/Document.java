@@ -1,18 +1,18 @@
-package ie.gmit.sw.document;
+package ie.gmit.sw.documents;
 
 import java.util.Set;
 
 /**
- * A representation of a processed document that can be persisted
- * in a database.
+ * This is an implementation of the {@link ie.gmit.sw.documents.Documentable}
+ * interface.
  */
-public class Document {
+public class Document implements Documentable {
 	private int id;
 	private Set<Integer> shingles;
 	
 	/**
 	 * Fully parameterised constructor to create an instance of the
-	 * {@link ie.gmit.sw.document.Document} class.
+	 * {@link ie.gmit.sw.documents.Document} class.
 	 * @param id is used to uniquely identify the document.
 	 * @param shingles is a set of hashed values. 
 	 */
@@ -22,16 +22,14 @@ public class Document {
 	}
 
 	/**
-	 * Get the id associated with this document.
-	 * @return the document id.
+	 * {@inheritDoc}
 	 */
 	public int getId() {
 		return id;
 	}
 
 	/**
-	 * Get the set of shingles associated with this request.
-	 * @return the set of shingles.
+	 * 
 	 */
 	public Set<Integer> getShingles() {
 		return shingles;

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ie.gmit.sw.document.Document;
+import ie.gmit.sw.documents.Documentable;
 
 /**
  * This abstract class should be extended by any object that is responsible
@@ -15,14 +15,14 @@ public abstract class DocumentComparer implements DocumentComparator {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Map<Integer, Float> compare(Document original, List<Document> documents) {
+	public Map<Integer, Float> compare(Documentable original, List<Documentable> documents) {
 		Map<Integer, Float> map = new HashMap<Integer, Float>();
 		
 		/*
 		 * Compare each document and calculate the Jaccard index and add
 		 * the results to the map that will be returned.
 		 */
-		for (Document document : documents) {
+		for (Documentable document : documents) {
 			/*
 			 * Delegate the work to the overloaded compare() method even
 			 * though it is not implemented yet. This is known as the
@@ -38,6 +38,6 @@ public abstract class DocumentComparer implements DocumentComparator {
 	/**
 	 * {@inheritDoc}
 	 */
-	public abstract float compare(Document original, Document document);
+	public abstract float compare(Documentable original, Documentable document);
 
 }

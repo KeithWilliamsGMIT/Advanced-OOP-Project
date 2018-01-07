@@ -3,7 +3,7 @@ package ie.gmit.sw.comparators;
 import java.util.List;
 import java.util.Map;
 
-import ie.gmit.sw.document.Document;
+import ie.gmit.sw.documents.Documentable;
 
 /**
  * This interface should be implemented by any object that plays the role
@@ -18,7 +18,7 @@ public interface DocumentComparator {
 	 * @param documents to compare the original document against.
 	 * @return a map where the key is the document id and the value is the similarity measurement.
 	 */
-	public Map<Integer, Float> compare(Document original, List<Document> documents);
+	public Map<Integer, Float> compare(Documentable original, List<Documentable> documents);
 
 	/**
 	 * Compare and calculate the similarity of two documents.
@@ -26,6 +26,6 @@ public interface DocumentComparator {
 	 * @param document to compare the original document against.
 	 * @return the similarity measurement.
 	 */
-	public float compare(Document original, Document document);
+	public float compare(Documentable original, Documentable document);
 
 }

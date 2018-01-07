@@ -4,12 +4,13 @@ import java.io.InputStream;
 import java.util.Set;
 
 import ie.gmit.sw.comparators.DocumentComparator;
-import ie.gmit.sw.document.Parseator;
+import ie.gmit.sw.parsers.Parseator;
 
 /**
- * This is an implementation of the requestable interface. This abstract
- * implements all of the methods defined in the interface. However, any
- * class that extends this abstract class must set the parser and comparer.
+ * This is an implementation of the {@link ie.gmit.sw.requests.Requestable}
+ * interface. This abstract class implements all of the methods defined in
+ * the interface. However, any class that extends this abstract class must
+ * set the parser and comparer.
  */
 public abstract class Request implements Requestable {
 	private String taskNumber;

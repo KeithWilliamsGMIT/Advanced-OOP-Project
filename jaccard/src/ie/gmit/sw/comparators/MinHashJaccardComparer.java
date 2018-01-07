@@ -4,7 +4,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
-import ie.gmit.sw.document.Document;
+import ie.gmit.sw.documents.Documentable;
 
 /**
  * This class is responsible for calculating the Jaccard index, meaning the
@@ -39,7 +39,7 @@ public class MinHashJaccardComparer extends DocumentComparer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public float compare(Document original, Document document) {
+	public float compare(Documentable original, Documentable document) {
 		// Calculate min hash values before comparing documents.
 		Set<Integer> a = calculateMinHash(original);
 		Set<Integer> b = calculateMinHash(document);
@@ -56,7 +56,7 @@ public class MinHashJaccardComparer extends DocumentComparer {
 	 * Calculate a set of min hash values for the shingles in the given
 	 * document.
 	 */
-	private Set<Integer> calculateMinHash(Document document) {
+	private Set<Integer> calculateMinHash(Documentable document) {
 		Set<Integer> shingles = new TreeSet<Integer>();
 		
 		for (Integer hash : minhashes) {

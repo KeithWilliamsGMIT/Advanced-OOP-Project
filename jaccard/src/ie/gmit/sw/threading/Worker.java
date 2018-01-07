@@ -7,7 +7,8 @@ import java.util.concurrent.BlockingQueue;
 
 import ie.gmit.sw.databases.DocumentRepository;
 import ie.gmit.sw.databases.Repository;
-import ie.gmit.sw.document.Document;
+import ie.gmit.sw.documents.Document;
+import ie.gmit.sw.documents.Documentable;
 import ie.gmit.sw.requests.Requestable;
 
 /**
@@ -33,7 +34,7 @@ public class Worker implements Runnable {
 	/*
 	 * Define a repository to save the processed documents to.
 	 */
-	private Repository<Document> repository = new DocumentRepository();
+	private Repository<Documentable> repository = new DocumentRepository();
 	
 	/*
 	 * If true, the thread will keep checking for new requests in the in queue.
@@ -64,7 +65,7 @@ public class Worker implements Runnable {
 				Set<Integer> shingles = request.getParser().parse(request.getDocument());
 				
 				// Get all documents from the database.
-				List<Document> documents = repository.retrieveAll();
+				List<Documentable> documents = repository.retrieveAll();
 				
 				/*
 				 * Get the number of documents in the database and use the total
@@ -78,13 +79,13 @@ public class Worker implements Runnable {
 				int id = documents.size();
 				
 				// Create the new document object that should be stored.
-				Document document = new Document(id, shingles);
+				Documentable document = new Document(id, shingles);
 				
 				// Write the document to the database.
 				repository.save(document);
 				
 				// Calculate the Jaccard index.
-				Map<Integer, Float>result = request.getComparator().compare(document, documents);
+				Map<Integer, Float> result = request.getComparator().compare(document, documents);
 				
 				// Add the result to an out queue when processed.
 				map.put(request.getTaskNumber(), result);

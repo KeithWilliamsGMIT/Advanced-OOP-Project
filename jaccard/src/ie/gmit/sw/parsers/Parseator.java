@@ -1,4 +1,4 @@
-package ie.gmit.sw.document;
+package ie.gmit.sw.parsers;
 
 import java.io.IOException;
 import java.io.InputStream;

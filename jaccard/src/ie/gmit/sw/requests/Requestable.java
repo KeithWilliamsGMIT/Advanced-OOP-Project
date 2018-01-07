@@ -4,13 +4,15 @@ import java.io.InputStream;
 import java.util.Set;
 
 import ie.gmit.sw.comparators.DocumentComparator;
-import ie.gmit.sw.document.Parseator;
+import ie.gmit.sw.parsers.Parseator;
 
 /**
  * This interface should be implemented by any object that plays the role
  * of a request. In this application, each request should contain a task
  * number, which will be used to identify if the request is processed when
- * polling the result.
+ * polling the result, a document which should be processed, and a
+ * {@link ie.gmit.sw.Parseator} and {@link ie.gmit.sw.comparators.DocumentComparator}
+ * that will be used to process the document. 
  */
 public interface Requestable {
 	/**

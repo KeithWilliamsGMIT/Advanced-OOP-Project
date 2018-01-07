@@ -1,4 +1,4 @@
-package ie.gmit.sw.document;
+package ie.gmit.sw.parsers;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +20,7 @@ public class ShingleParser implements Parseator<Set<Integer>> {
 	
 	/**
 	 * Fully parameterised constructor to create an instance of the
-	 * {@link ie.gmit.sw.comparators.ShingleParser} class.
+	 * {@link ie.gmit.sw.parsers.ShingleParser} class.
 	 * @param shingleSize is the number of words per shingle.
 	 */
 	public ShingleParser(int shingleSize) {

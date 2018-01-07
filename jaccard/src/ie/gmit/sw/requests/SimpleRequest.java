@@ -5,8 +5,8 @@ import java.util.Set;
 
 import ie.gmit.sw.comparators.DocumentComparator;
 import ie.gmit.sw.comparators.SimpleJaccardComparer;
-import ie.gmit.sw.document.Parseator;
-import ie.gmit.sw.document.ShingleParser;
+import ie.gmit.sw.parsers.Parseator;
+import ie.gmit.sw.parsers.ShingleParser;
 
 /**
  * This class is a concrete implementation of the {@link ie.gmit.sw.requests.Request}

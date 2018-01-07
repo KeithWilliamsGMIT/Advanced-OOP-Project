@@ -3,7 +3,7 @@ package ie.gmit.sw.comparators;
 import java.util.Set;
 import java.util.TreeSet;
 
-import ie.gmit.sw.document.Document;
+import ie.gmit.sw.documents.Documentable;
 
 /**
  * This class is responsible for calculating the Jaccard index, meaning the
@@ -20,7 +20,7 @@ public class SimpleJaccardComparer extends DocumentComparer {
 	/**
 	 * {@inheritDoc}
 	 */
-	public float compare(Document original, Document document) {
+	public float compare(Documentable original, Documentable document) {
 		// A set to store the intersection O(n).
 		Set<Integer> n = new TreeSet<Integer>(document.getShingles());
 		n.retainAll(original.getShingles()); // O(n log n)
