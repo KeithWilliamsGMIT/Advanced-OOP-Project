@@ -5,6 +5,8 @@ import java.util.Set;
 /**
  * This is an implementation of the {@link ie.gmit.sw.documents.Documentable}
  * interface.
+ * 
+ * {@author Keith Williams}
  */
 public class Document implements Documentable {
 	private int id;

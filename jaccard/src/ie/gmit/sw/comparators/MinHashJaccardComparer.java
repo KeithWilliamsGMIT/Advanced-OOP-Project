@@ -15,12 +15,14 @@ import ie.gmit.sw.documents.Documentable;
  * complexity by reducing the total number of comparisons required. However,
  * the similarity measurement will be an approximation and may not be 100%
  * accurate. For smaller documents see {@link ie.gmit.sw.comparators.SimpleJaccardComparer}.
+ *
+ * {@author Keith Williams}
  */
 public class MinHashJaccardComparer extends DocumentComparer {
 	/*
 	 * Set of random hash functions.
 	 */
-	private Set<Integer> minhashes;
+	private Set<Integer> minHashes;
 	
 	/**
 	 * Fully parameterised constructor to create an instance of the
@@ -28,11 +30,11 @@ public class MinHashJaccardComparer extends DocumentComparer {
 	 * @param numberOfHashes refers to the number of min hashes in the set.
 	 */
 	public MinHashJaccardComparer(int numberOfHashes) {
-		minhashes = new TreeSet<Integer>();
+		minHashes = new TreeSet<Integer>();
 		Random rnd = new Random();
 
 		for (int i = 0; i < numberOfHashes; i++) {
-			minhashes.add(rnd.nextInt());
+			minHashes.add(rnd.nextInt());
 		}
 	}
 
@@ -49,7 +51,7 @@ public class MinHashJaccardComparer extends DocumentComparer {
 		n.retainAll(a); // O(n log n)
 		
 		// Calculate the Jaccard index.
-		return n.size() / minhashes.size();
+		return 1.0f * n.size() / minHashes.size();
 	}
 
 	/*
@@ -59,7 +61,7 @@ public class MinHashJaccardComparer extends DocumentComparer {
 	private Set<Integer> calculateMinHash(Documentable document) {
 		Set<Integer> shingles = new TreeSet<Integer>();
 		
-		for (Integer hash : minhashes) {
+		for (Integer hash : minHashes) {
 			int min = Integer.MAX_VALUE;
 			
 			for (int shingle : document.getShingles()) {

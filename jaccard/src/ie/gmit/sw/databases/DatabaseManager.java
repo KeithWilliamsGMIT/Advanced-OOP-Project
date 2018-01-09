@@ -14,6 +14,7 @@ import xtea_db4o.XTeaEncryptionStorage;
  * Note that this class is a singleton as only one instance of the database
  * should exist in the application. Note that the init() method must be
  * invoked in order to create the instance of the database.
+ * {@author Keith Williams}
  */
 public class DatabaseManager {
 	
@@ -71,12 +72,19 @@ public class DatabaseManager {
 		 */
 		db = Db4oEmbedded.openFile(config, filename);
 	}
-	
+
 	/**
 	 * Get the instance of the database.
 	 * @return get the database instance.
 	 */
 	public ObjectContainer getDb() {
 		return db;
+	}
+	
+	/**
+	 * Shutdown the database.
+	 */
+	public void shutdown() {
+		db.close();
 	}
 }

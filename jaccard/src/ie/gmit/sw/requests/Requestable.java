@@ -1,10 +1,9 @@
 package ie.gmit.sw.requests;
 
 import java.io.InputStream;
-import java.util.Set;
 
 import ie.gmit.sw.comparators.DocumentComparator;
-import ie.gmit.sw.parsers.Parseator;
+import ie.gmit.sw.parsers.ShingleParseator;
 
 /**
  * This interface should be implemented by any object that plays the role
@@ -12,7 +11,9 @@ import ie.gmit.sw.parsers.Parseator;
  * number, which will be used to identify if the request is processed when
  * polling the result, a document which should be processed, and a
  * {@link ie.gmit.sw.Parseator} and {@link ie.gmit.sw.comparators.DocumentComparator}
- * that will be used to process the document. 
+ * that will be used to process the document.
+ * 
+ * {@author Keith Williams}
  */
 public interface Requestable {
 	/**
@@ -31,7 +32,7 @@ public interface Requestable {
 	 * Get the parser associated with this request.
 	 * @return the parser.
 	 */
-	public Parseator<Set<Integer>> getParser();
+	public ShingleParseator getParser();
 	
 	/**
 	 * Get the comparator associated with this request.

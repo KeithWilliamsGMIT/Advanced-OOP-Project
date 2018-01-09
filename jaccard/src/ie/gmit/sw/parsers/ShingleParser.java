@@ -10,9 +10,11 @@ import java.util.LinkedList;
 import java.util.Set;
 
 /**
- * A class responsible for parsing shingles from a document.
+ * This class is responsible for parsing shingles from a document.
+ * 
+ * {@author Keith Williams}
  */
-public class ShingleParser implements Parseator<Set<Integer>> {
+public class ShingleParser implements ShingleParseator {
 	/*
 	 * The number of words per shingle.
 	 */

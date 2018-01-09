@@ -9,6 +9,8 @@ import ie.gmit.sw.documents.Documentable;
 /**
  * This abstract class should be extended by any object that is responsible
  * for comparing and calculating the similarity of two or more documents.
+ *
+ * {@author Keith Williams}
  */
 public abstract class DocumentComparer implements DocumentComparator {
 
@@ -22,6 +24,7 @@ public abstract class DocumentComparer implements DocumentComparator {
 		 * Compare each document and calculate the Jaccard index and add
 		 * the results to the map that will be returned.
 		 */
+		
 		for (Documentable document : documents) {
 			/*
 			 * Delegate the work to the overloaded compare() method even

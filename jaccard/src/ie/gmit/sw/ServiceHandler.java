@@ -8,25 +8,19 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 
 import ie.gmit.sw.databases.DatabaseManager;
-import ie.gmit.sw.requests.OptimisedRequest;
+import ie.gmit.sw.requests.OptimisedTextRequest;
 import ie.gmit.sw.requests.Requestable;
 import ie.gmit.sw.threading.ThreadPoolManager;
 
 import javax.servlet.annotation.*;
 
-/* NB: You will need to add the JAR file $TOMCAT_HOME/lib/servlet-api.jar to your CLASSPATH 
- *     variable in order to compile a servlet from a command line.
- */
 @WebServlet("/UploadServlet")
 @MultipartConfig(fileSizeThreshold=1024*1024*2, // 2MB. The file size in bytes after which the file will be temporarily stored on disk. The default size is 0 bytes.
                  maxFileSize=1024*1024*10,      // 10MB. The maximum size allowed for uploaded files, in bytes
                  maxRequestSize=1024*1024*50)   // 50MB. he maximum size allowed for a multipart/form-data request, in bytes.
 public class ServiceHandler extends HttpServlet {
-	/* Declare any shared objects here. For example any of the following can be handled from 
-	 * this context by instantiating them at a servlet level:
-	 *   1) An Asynchronous Message Facade: declare the IN and OUT queues or MessageQueue
-	 *   2) An Chain of Responsibility: declare the initial handler or a full chain object
-	 *   1) A Proxy: Declare a shared proxy here and a request proxy inside doGet()
+	/* 
+	 * Declare any shared objects here.
 	 */
 	private int shingleSize;
 	private int minHashNumber;
@@ -67,12 +61,13 @@ public class ServiceHandler extends HttpServlet {
 		}
 	}
 
-	/* The doGet() method handles a HTTP GET request. Please note the following very carefully:
+	/* 
+	 * The doGet() method handles a HTTP GET request. Please note the following very carefully:
 	 *   1) The doGet() method is executed in a separate thread. If you instantiate any objects
 	 *      inside this method and don't pass them around (ie. encapsulate them), they will be
 	 *      thread safe.
-	 *   2) Any instance variables like environmentalVariable or class fields like jobNumber will 
-	 *      are shared by threads and must be handled carefully.
+	 *   2) Any instance variables or class fields will be shared by threads and must be handled
+	 *      carefully.
 	 *   3) It is standard practice for doGet() to forward the method invocation to doPost() or
 	 *      vice-versa.
 	 */
@@ -101,7 +96,7 @@ public class ServiceHandler extends HttpServlet {
 			
 			// Create a new request and add the job to the in-queue.
 			// Note that the add() method is not a blocking call.
-			Requestable request = new OptimisedRequest(taskNumber, part.getInputStream(), shingleSize, minHashNumber);
+			Requestable request = new OptimisedTextRequest(taskNumber, part.getInputStream(), shingleSize, minHashNumber);
 			queue.add(request);
 		} else {
 			RequestDispatcher dispatcher = req.getRequestDispatcher("/poll");

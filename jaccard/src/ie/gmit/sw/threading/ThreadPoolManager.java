@@ -16,6 +16,8 @@ import ie.gmit.sw.requests.Requestable;
  * 
  * Note that this is class uses the singleton design pattern as there
  * should only ever be one {@link ie.gmit.sw.threading.ThreadPoolManager} instance.
+ *
+ * {@author Keith Williams}
  */
 public class ThreadPoolManager {
 	/*
@@ -37,7 +39,7 @@ public class ThreadPoolManager {
 	 * other classes, for example, the servlet that handles the polling.
 	 */
 	private Map<String, Map<Integer, Float>> map = new ConcurrentHashMap<String, Map<Integer, Float>>();
-
+	
 	/*
 	 * Private constructor to prevent more than one instance of this object
 	 * from being created.
@@ -66,6 +68,7 @@ public class ThreadPoolManager {
 	public void init(int threadPoolSize, BlockingQueue<Requestable> queue) throws InterruptedException {
 		// Create a thread pool with X number of threads.
 		pool = Executors.newFixedThreadPool(threadPoolSize);
+		
 		// Populate the thread pool with workers.
 		for (int i = 0; i < threadPoolSize; i++) {
 			Runnable worker = new Worker(queue, map);

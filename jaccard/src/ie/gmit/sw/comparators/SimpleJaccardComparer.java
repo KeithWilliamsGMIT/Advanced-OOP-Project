@@ -14,6 +14,8 @@ import ie.gmit.sw.documents.Documentable;
  * in another document. This results in an accurate measure of similarity
  * but at a high computational complexity. For larger documents see
  * {@link ie.gmit.sw.comparators.MinHashJaccardComparer}.
+ * 
+ * {@author Keith Williams}
  */
 public class SimpleJaccardComparer extends DocumentComparer {
 	
@@ -28,6 +30,6 @@ public class SimpleJaccardComparer extends DocumentComparer {
 		// Calculate the Jaccard index.
 		float unionSize = original.getShingles().size() + document.getShingles().size() - n.size();
 		
-		return n.size() / unionSize;
+		return 1.0f * n.size() / unionSize;
 	}
 }

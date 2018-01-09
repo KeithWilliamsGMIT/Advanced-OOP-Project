@@ -18,6 +18,8 @@ import ie.gmit.sw.requests.Requestable;
  * 1. Extract the shingles
  * 2. Store in a database
  * 3. Compute the similarity
+ * 
+ * {@author Keith Williams}
  */
 public class Worker implements Runnable {
 	
@@ -79,7 +81,7 @@ public class Worker implements Runnable {
 				int id = documents.size();
 				
 				// Create the new document object that should be stored.
-				Documentable document = new Document(id, shingles);
+				Document document = new Document(id, shingles);
 				
 				// Write the document to the database.
 				repository.save(document);

@@ -1,21 +1,22 @@
 package ie.gmit.sw.requests;
 
 import java.io.InputStream;
-import java.util.Set;
 
 import ie.gmit.sw.comparators.DocumentComparator;
-import ie.gmit.sw.parsers.Parseator;
+import ie.gmit.sw.parsers.ShingleParseator;
 
 /**
  * This is an implementation of the {@link ie.gmit.sw.requests.Requestable}
  * interface. This abstract class implements all of the methods defined in
  * the interface. However, any class that extends this abstract class must
  * set the parser and comparer.
+ * 
+ * {@author Keith Williams}
  */
 public abstract class Request implements Requestable {
 	private String taskNumber;
 	private InputStream document;
-	private Parseator<Set<Integer>> parser;
+	private ShingleParseator parser;
 	private DocumentComparator comparer;
 	
 	/**
@@ -46,7 +47,7 @@ public abstract class Request implements Requestable {
 	/**
 	 * {@inheritDoc}
 	 */
-	public Parseator<Set<Integer>> getParser() {
+	public ShingleParseator getParser() {
 		return parser;
 	}
 	
@@ -54,7 +55,7 @@ public abstract class Request implements Requestable {
 	 * Set the parser for this request.
 	 * @param parser to set.
 	 */
-	protected void setParser(Parseator<Set<Integer>> parser) {
+	protected void setParser(ShingleParseator parser) {
 		this.parser = parser;
 	}
 	

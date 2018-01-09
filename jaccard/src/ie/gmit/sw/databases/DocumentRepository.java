@@ -10,6 +10,8 @@ import ie.gmit.sw.documents.Documentable;
 /**
  * This class is responsible for saving and retrieving all {@link ie.gmit.sw.documents.Documentable}
  * objects to and from the database.
+ * 
+ * {@author Keith Williams}
  */
 public class DocumentRepository implements Repository<Documentable> {
 	

@@ -9,6 +9,8 @@ import ie.gmit.sw.documents.Documentable;
  * This interface should be implemented by any object that plays the role
  * of a comparator for documents. Any class that inherits this interface is
  * responsible for calculating the similarity of two or more documents.
+ *
+ * {@author Keith Williams}
  */
 public interface DocumentComparator {
 

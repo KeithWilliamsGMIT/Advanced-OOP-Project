@@ -44,7 +44,7 @@
   
   <context-param>
     <param-name>DB_UPDATE_DEPTH</param-name>
-    <param-value>3</param-value>
+    <param-value>10</param-value>
   </context-param>
 
   <!-- A servlet class must be bound to a name -->
